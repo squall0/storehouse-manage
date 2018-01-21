@@ -1,12 +1,11 @@
-package aboutdate;
+package com.webone.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.Size;
-
-import org.springframework.data.annotation.Id;
 
 @Entity
 public class User {
@@ -18,7 +17,7 @@ public class User {
 	String username;
 	@Size(min = 6, max = 45)
 	String password;
-	@Size(min = 64, max = 64)
+//	@Size(min = 64, max = 64)
 	String token;
 
 	public long getId() {
@@ -29,20 +28,12 @@ public class User {
 		this.id = id;
 	}
 
-	public String getName() {
-		return username;
-	}
-
-	public void setName(String name) {
-		this.username = name;
-	}
-
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String address) {
-		this.password = address;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getToken() {
@@ -51,5 +42,13 @@ public class User {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }
