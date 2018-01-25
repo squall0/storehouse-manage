@@ -1,42 +1,73 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js">
-<!--<![endif]-->
+<html>
 
 <head>
-  <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>登录</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta name="description" content="Sign In" />
-    <meta name="keywords" content="html5, css3, mobile first, responsive" />
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- <link rel="shortcut icon" href="favicon.ico"> -->
-    <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'> -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/css/animate.css"/>
-    <link rel="stylesheet" href="/css/style.css"/>
-    <!-- Modernizr JS -->
-    <script src="/js/modernizr-2.6.2.min.js"></script>
-    <!-- FOR IE9 below -->
-    <!--[if lt IE 9]>
-	<script src="js/respond.min.js"></script>
-	<![endif]-->  
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/mystyle.css"></link>
+    <script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="js/mymain.js"></script>
+    <title>主页</title>
 </head>
 
 <body>
-    <div class="container">
+    <div class="container" id="a">
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+                <form class="form-search form-inline">
+                    <input class="form-control" id="b" type="text"></input>
+                    <input type="submit" class="btn btn-info" value="查询"></input>
+                </form>
+            </li>
+        </ul>
         <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                <!-- Start Sign In Form -->
-                
-                <!-- END Sign In Form -->
+            <div class="col-3">
+                <nav class="navbar bg-light">
+                    <ul class="navbar-nav">
+                        <li class="nav-item" th:each="storeroom:${storerooms}">
+                            <a class="nav-link oncl" href="#" th:text="${storeroom.name}">Link 1</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-9">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="tab1">仓库</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" id="tab2">背包</a>
+                    </li>
+                </ul>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>规格</th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        <tr th:each="tool:${tools}">
+                            <th th:text="${tool.name}">梅花扳手</th>
+                            <th>
+                                <p th:text="${tool.size1}">-</p>
+                                <br></br>
+                                <p th:text="${tool.size2}">-</p>
+                            </th>
+                            <th>
+                                <button class="btn btn-primary btn-sm">get</button>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </div>    
+    </div>
 </body>
 
 </html>

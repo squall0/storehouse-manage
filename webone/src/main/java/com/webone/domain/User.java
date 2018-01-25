@@ -20,7 +20,7 @@ public class User {
 //	@Size(min = 64, max = 64)
 	String token;
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
