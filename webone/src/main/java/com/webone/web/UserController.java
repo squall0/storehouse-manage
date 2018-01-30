@@ -31,23 +31,23 @@ public class UserController {
 	private StoJpaRepository storepository;
 
 	@RequestMapping("/")
-	public String index(Model model,HttpSession session) {
-		String token=session.getAttribute("token").toString();
-		int id=userrepository.findBytoken(token).get(0).getId();
-		List<Tool> tools=new ArrayList<Tool>();		
+	public String index(Model model, HttpSession session) {
+		String token = session.getAttribute("token").toString();
+		int id = userrepository.findBytoken(token).get(0).getId();
+		List<Tool> tools = new ArrayList<Tool>();
 		tools.addAll(toolrepository.findByuserId(id));
-		List<Storeroom> storerooms=new ArrayList<Storeroom>();
+		List<Storeroom> storerooms = new ArrayList<Storeroom>();
 		storerooms.addAll(storepository.findAll());
 		model.addAttribute("tools", tools);
-		model.addAttribute("storerooms",storerooms);
+		model.addAttribute("storerooms", storerooms);
 		return "index";
 	}
-	
+
 	@RequestMapping(value = "/backpack", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Tool> backpack(Model model, HttpSession session) {
-		String token=session.getAttribute("token").toString();
-		int id=userrepository.findBytoken(token).get(0).getId();
+		String token = session.getAttribute("token").toString();
+		int id = userrepository.findBytoken(token).get(0).getId();
 		return toolrepository.findByuserId(id);
 	}
 
@@ -61,19 +61,37 @@ public class UserController {
 		// model.addAttribute("tip", "密码错误");
 		User userDb = userrepository.findByusername(user.getUsername()).get(0);
 		if (user.getPassword().equals(userDb.getPassword())) {
-			Integer a = (int) (Math.random() * 1000000);
-			userDb.setToken(a.toString());
+			Integer token = (int) (Math.random() * 1000000);
+			userDb.setToken(token.toString());
 			userrepository.save(userDb);
-			session.setAttribute("token", a.toString());
+			session.setAttribute("token", token.toString());
 		}
-
-		// return "login"
 		return "redirect:/";
 	}
+
 	@RequestMapping("/storeroom")
 	@ResponseBody
-	public List<Tool> storeroom(@RequestParam("name") String name){
-		int id=storepository.findByname(name).get(0).getId();
+	public List<Tool> storeroom(@RequestParam("name") String name) {
+		int id = storepository.findByname(name).get(0).getId();
 		return toolrepository.findBystoreroomId(id);
+	}
+
+	@RequestMapping("/take")
+	@ResponseBody
+	public void take(@RequestParam("id") int toolid, HttpSession session) {
+		String token = session.getAttribute("token").toString();
+		int id = userrepository.findBytoken(token).get(0).getId();
+		Tool tool = toolrepository.findOne(toolid);
+		tool.setUserId(id);
+		toolrepository.save(tool);
+	}
+
+	// 被拿取的工具不显示
+	@RequestMapping("/bring")
+	@ResponseBody
+	public void bring(@RequestParam("id") int toolid) {
+		Tool tool = toolrepository.findOne(toolid);
+		tool.setUserId(0);
+		toolrepository.save(tool);
 	}
 }

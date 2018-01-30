@@ -9,7 +9,7 @@
     <script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-    <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="js/mymain.js"></script>
     <title>主页</title>
 </head>
@@ -19,7 +19,8 @@
         <ul class="nav justify-content-end">
             <li class="nav-item">
                 <form class="form-search form-inline">
-                    <input class="form-control" id="b" type="text"></input>
+                    <input class="form-control" id="b" type="text" name="name" placeholder="名称"></input>
+                    <input class="form-control" id="b" type="text" name="size" placeholder="规格"></input>
                     <input type="submit" class="btn btn-info" value="查询"></input>
                 </form>
             </li>
@@ -52,7 +53,7 @@
                         </tr>
                     </thead>
                     <tbody id="tbody">
-                        <tr th:each="tool:${tools}">
+                        <tr th:each="tool:${tools}" th:id="${tool.id}">
                             <th th:text="${tool.name}">梅花扳手</th>
                             <th>
                                 <p th:text="${tool.size1}">-</p>
@@ -60,7 +61,7 @@
                                 <p th:text="${tool.size2}">-</p>
                             </th>
                             <th>
-                                <button class="btn btn-primary btn-sm">get</button>
+                                <button class="btn btn-primary btn-sm" >放回</button>
                             </th>
                         </tr>
                     </tbody>
