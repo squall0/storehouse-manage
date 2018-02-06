@@ -33,11 +33,12 @@ public class UserController {
 	@RequestMapping("/")
 	public String index(Model model, HttpSession session) {
 		String token = session.getAttribute("token").toString();
-		int id = userrepository.findBytoken(token).get(0).getId();
+		User user = userrepository.findBytoken(token).get(0);
 		List<Tool> tools = new ArrayList<Tool>();
-		tools.addAll(toolrepository.findByuserId(id));
+		tools.addAll(toolrepository.findByuserId(user.getId()));
 		List<Storeroom> storerooms = new ArrayList<Storeroom>();
-		storerooms.addAll(storepository.findAll());
+		storerooms.addAll(storepository.findByteamId(user.getTeamId()));
+		model.addAttribute("name",user.getUsername());
 		model.addAttribute("tools", tools);
 		model.addAttribute("storerooms", storerooms);
 		return "index";
@@ -72,8 +73,8 @@ public class UserController {
 	@RequestMapping("/storeroom")
 	@ResponseBody
 	public List<Tool> storeroom(@RequestParam("name") String name) {
-		int id = storepository.findByname(name).get(0).getId();
-		return toolrepository.findBystoreroomId(id);
+		int roomid = storepository.findByname(name).get(0).getId();
+		return toolrepository.findByStoreroomIdAndUserId(roomid, 0);
 	}
 
 	@RequestMapping("/take")
@@ -89,9 +90,16 @@ public class UserController {
 	// 被拿取的工具不显示
 	@RequestMapping("/bring")
 	@ResponseBody
-	public void bring(@RequestParam("id") int toolid) {
+	public void bring(@RequestParam("id") int toolid, @RequestParam("roomid") int storeroomId) {
 		Tool tool = toolrepository.findOne(toolid);
 		tool.setUserId(0);
+		tool.setStoreroomId(storeroomId);
 		toolrepository.save(tool);
+	}
+
+	@RequestMapping("/find")
+	public String find() {
+
+		return null;
 	}
 }

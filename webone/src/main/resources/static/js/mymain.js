@@ -3,6 +3,7 @@ $(document).ready(function() {
         $("#tab1").attr("class", "nav-link active");
         $("#tab2").attr("class", "nav-link");
         $("#tab1").text($(this).text());
+        $("#tab1").attr("data-room_id",$(this).attr("data-room_id"));
         $.getJSON("/storeroom", "name=" + $(this).text(), function(data) {
             var str;
             for (i in data) {
@@ -12,7 +13,7 @@ $(document).ready(function() {
                     "<td> <button onclick=\"take(" + data[i].id + ")\" class=\"btn btn-primary btn-sm\" >拿取</button> </td>" +
                     "</tr>";
             }
-            if (data.length <= 1) {
+            if (data.length == null) {
                 str += "<tr><td>空</td><td></td><td></td></tr>";
             }
             $("#tbody").html(str);
@@ -30,7 +31,7 @@ $(document).ready(function() {
                     "<td> <button onclick=\"take(" + data[i].id + ")\" class=\"btn btn-primary btn-sm\" >拿取</button> </td>" +
                     "</tr>";
             }
-            if (data.length <= 1) {
+            if (data.length <= 0) {
                 str += "<tr><td>空</td><td></td><td></td></tr>";
             }
             $("#tbody").html(str);
@@ -46,7 +47,7 @@ $(document).ready(function() {
                     "<td> <button onclick=\"bring(" + data[i].id + ")\" class=\"btn btn-primary btn-sm\" >放回</button> </td>" +
                     "</tr>";
             }
-            if (data.length <= 1) {
+            if (data.length <= 0) {
                 str += "<tr><td>空</td><td></td><td></td></tr>";
             }
             $("#tbody").html(str);
@@ -67,7 +68,8 @@ function take(r) {
 //失败提示失败并刷新页面
 function bring(r) {
     $("#" + r).remove();
-    $.post("/bring", { "id": r }, function(status) {
+    var t=$("#tab1").attr("data-room_id");
+    $.post("/bring", { "id": r,"roomid":t }, function(status) {
         if (status == "success") {
             // $("#" + r).remove();
         }

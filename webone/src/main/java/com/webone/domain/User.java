@@ -19,6 +19,7 @@ public class User {
 	String password;
 //	@Size(min = 64, max = 64)
 	String token;
+	int teamId;
 
 	public int getId() {
 		return id;
@@ -50,5 +51,13 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public int getTeamId() {
+		return teamId;
+	}
+
+	public void setTeamId(int teamId) {
+		this.teamId = teamId;
 	}
 }

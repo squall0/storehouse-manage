@@ -6,12 +6,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Storeroom {
+public class Power {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
 	String name;
-	int teamId;
 
 	public int getId() {
 		return id;
@@ -28,13 +27,4 @@ public class Storeroom {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public int getTeamId() {
-		return teamId;
-	}
-
-	public void setTeamId(int teamId) {
-		this.teamId = teamId;
-	}
-
 }
