@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Tool {
@@ -14,7 +15,8 @@ public class Tool {
 	String size1;
 	String size2;
 	int userId;
-	int storeroomId;
+	@ManyToOne
+	private Storeroom storeroom;
 
 	public int getId() {
 		return id;
@@ -56,12 +58,11 @@ public class Tool {
 		this.userId = userId;
 	}
 
-	public int getStoreroomId() {
-		return storeroomId;
+	public Storeroom getStoreroom() {
+		return storeroom;
 	}
 
-	public void setStoreroomId(int storeroomId) {
-		this.storeroomId = storeroomId;
+	public void setStoreroom(Storeroom storeroom) {
+		this.storeroom = storeroom;
 	}
-
 }

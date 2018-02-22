@@ -12,4 +12,6 @@ public interface ToolJpaRepository extends JpaRepository<Tool, Integer> {
 	List<Tool> findBystoreroomId(int id);
 
 	List<Tool> findByStoreroomIdAndUserId(int storeroomId, int userId);
+
+	List<Tool> findByNameLikeAndSize1LikeAndStoreroomIdIn(String name, String size1, List<Integer> storeroomId);
 }

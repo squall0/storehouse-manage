@@ -1,6 +1,8 @@
 package com.webone.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -38,10 +40,34 @@ public class UserController {
 		tools.addAll(toolrepository.findByuserId(user.getId()));
 		List<Storeroom> storerooms = new ArrayList<Storeroom>();
 		storerooms.addAll(storepository.findByteamId(user.getTeamId()));
-		model.addAttribute("name",user.getUsername());
+		model.addAttribute("name", user.getUsername());
 		model.addAttribute("tools", tools);
 		model.addAttribute("storerooms", storerooms);
 		return "index";
+	}
+
+	@RequestMapping(value = "/", method = RequestMethod.POST)
+	public String find(@RequestParam("name") String name, @RequestParam("size") String size, HttpSession session,
+			Model model) {
+
+		int teamId = userrepository.findBytoken(session.getAttribute("token").toString()).get(0).getTeamId();
+		Iterator<Storeroom> iterator = storepository.findByteamId(teamId).iterator();
+		List<Integer> storeRoomList = new ArrayList<>();
+		HashMap<Integer, String> roomname = new HashMap<>();
+		Iterator<Storeroom> t = storepository.findAll().iterator();
+		while (t.hasNext()) {
+			Storeroom storeroom = (Storeroom) t.next();
+			roomname.put(storeroom.getId(), storeroom.getName());
+		}
+		while (iterator.hasNext()) {
+			Storeroom storeroom = (Storeroom) iterator.next();
+			storeRoomList.add(storeroom.getId());
+
+		}
+		List<Tool> tools = toolrepository.findByNameLikeAndSize1LikeAndStoreroomIdIn("%" + name + "%", "%" + size + "%",
+				storeRoomList);
+		model.addAttribute("tools", tools);
+		return "find";
 	}
 
 	@RequestMapping(value = "/backpack", method = RequestMethod.GET)
@@ -90,16 +116,12 @@ public class UserController {
 	// 被拿取的工具不显示
 	@RequestMapping("/bring")
 	@ResponseBody
-	public void bring(@RequestParam("id") int toolid, @RequestParam("roomid") int storeroomId) {
+	public void bring(@RequestParam("id") int toolid,
+			@RequestParam(value = "roomid", required = false) Integer storeroomId) {
 		Tool tool = toolrepository.findOne(toolid);
 		tool.setUserId(0);
-		tool.setStoreroomId(storeroomId);
+		if (storeroomId != null)
+			tool.setStoreroom(storepository.findOne(storeroomId));
 		toolrepository.save(tool);
-	}
-
-	@RequestMapping("/find")
-	public String find() {
-
-		return null;
 	}
 }

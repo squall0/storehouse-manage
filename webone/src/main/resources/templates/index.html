@@ -21,9 +21,9 @@
 		<p th:text="${name}+',你好！'">404</p>
 		<ul class="nav justify-content-end">
 			<li class="nav-item">
-				<form class="form-search form-inline">
-					<input class="form-control" id="b" type="text" name="name"
-						placeholder="名称"></input> <input class="form-control" id="b"
+				<form class="form-search form-inline" method="post">
+					<input class="form-control b" type="text" name="name"
+						placeholder="名称"></input> <input class="form-control b"
 						type="text" name="size" placeholder="规格"></input> <input
 						type="submit" class="btn btn-info" value="查询"></input>
 				</form>
@@ -40,17 +40,19 @@
 				</nav>
 			</div>
 			<div class="col-9">
+				<span class="link text-muted" id="toc-toggle"></span>
 				<ul class="nav nav-tabs">
-					<li class="nav-item"><a class="nav-link" href="#" id="tab1">仓库</a>
+					<li class="nav-item"><a class="nav-link" href="#" id="tab1">选择仓库</a>
 					</li>
 					<li class="nav-item"><a class="nav-link active" href="#"
 						id="tab2">背包</a></li>
 				</ul>
-				<table class="table table-striped">
+				<table class="table table-striped table-sm">
 					<thead>
 						<tr>
 							<th>名称</th>
 							<th>规格</th>
+							<th>数量</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -61,14 +63,18 @@
 								<p th:text="${tool.size1}">-</p> <br></br>
 								<p th:text="${tool.size2}">-</p>
 							</th>
+							<th><p>1</p></th>
 							<th>
-								<button class="btn btn-primary btn-sm">放回</button>
+								<button class="btn btn-primary btn-sm"
+									th:onclick="'bring('+${tool.id}+')'">放回</button>
 							</th>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
+		<div class="beian">Copyright © 2018 - 2021 ToolSystems版权所有
+			托电检修部汽机本体班</div>
 	</div>
 </body>
 
