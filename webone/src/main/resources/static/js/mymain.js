@@ -2,13 +2,12 @@ function tab1(data) {
 	var str;
 	for (i in data) {
 		str += "<tr id=" + data[i].id + ">" + "<td>" + data[i].name + "</td>"
-				+ "<td><p>" + data[i].size1 + "</p><br><p>" + data[i].size2
-				+ "</p></td><td><p>1</p></td>" + "<td> <button onclick=\"take("
-				+ data[i].id
+				+ "<td><p>" + data[i].size1 + "</p></td><td><p>1</p></td>"
+				+ "<td> <button onclick=\"take(" + data[i].id
 				+ ")\" class=\"btn btn-primary btn-sm\" >拿取</button> </td>"
 				+ "</tr>";
 	}
-	if (data.length == null) {
+	if (data.length <= null) {
 		str += "<tr><td>空</td><td></td><td></td></tr>";
 	}
 	$("#tbody").html(str);
@@ -18,7 +17,8 @@ function tab2(data) {
 	for (i in data) {
 		str += "<tr id=" + data[i].id + ">" + "<td>" + data[i].name + "</td>"
 				+ "<td><p>" + data[i].size1 + "</p><br><p>" + data[i].size2
-				+ "</p></td><td><p>1</p></td>" + "<td> <button onclick=\"bring(" + data[i].id
+				+ "</p></td><td><p>1</p></td>"
+				+ "<td> <button onclick=\"bring(" + data[i].id
 				+ ")\" class=\"btn btn-primary btn-sm\" >放回</button> </td>"
 				+ "</tr>";
 	}
@@ -51,7 +51,7 @@ $(document).ready(function() {
 			tab2(data);
 		});
 	});
-//	$( ".col-3" ).hide( "slide", 1000 );
+	// $( ".col-3" ).hide( "slide", 1000 );
 });
 function take(r) {
 	$("#" + r).remove();

@@ -98,9 +98,13 @@ public class UserController {
 
 	@RequestMapping("/storeroom")
 	@ResponseBody
-	public List<Tool> storeroom(@RequestParam("name") String name) {
+	public List<Tool> storeroom(@RequestParam("name") String name,Model modle ) {
+		//if(name.equals("选择仓库"))
+		//	return "null";
 		int roomid = storepository.findByname(name).get(0).getId();
 		return toolrepository.findByStoreroomIdAndUserId(roomid, 0);
+		//modle.addAttribute("tools",toolrepository.findByStoreroomIdAndUserId(roomid, 0));
+		//return "test";
 	}
 
 	@RequestMapping("/take")
