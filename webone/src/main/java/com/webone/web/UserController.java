@@ -1,6 +1,7 @@
 package com.webone.web;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +18,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.webone.domain.Log;
 import com.webone.domain.Storeroom;
 import com.webone.domain.Tool;
 import com.webone.domain.User;
+import com.webone.repository.LogJpaRepository;
 import com.webone.repository.StoJpaRepository;
 import com.webone.repository.ToolJpaRepository;
 import com.webone.repository.UserJpaRepository;
+import com.webone.tool.Tbody;
 
 @Controller
 public class UserController {
@@ -31,6 +36,8 @@ public class UserController {
 	private ToolJpaRepository toolrepository;
 	@Autowired
 	private StoJpaRepository storepository;
+	@Autowired
+	private LogJpaRepository logrepository;
 
 	@RequestMapping("/")
 	public String index(Model model, HttpSession session) {
@@ -64,18 +71,23 @@ public class UserController {
 			storeRoomList.add(storeroom.getId());
 
 		}
+		List<String> sortProperties = new ArrayList<>();
+		sortProperties.add("name");
+		sortProperties.add("StoreroomId");
+		Sort sort = new Sort(Sort.Direction.DESC, sortProperties);
 		List<Tool> tools = toolrepository.findByNameLikeAndSize1LikeAndStoreroomIdIn("%" + name + "%", "%" + size + "%",
-				storeRoomList);
-		model.addAttribute("tools", tools);
+				storeRoomList, sort);
+		model.addAttribute("tbodies", Tbody.Sort(tools));
 		return "find";
 	}
 
 	@RequestMapping(value = "/backpack", method = RequestMethod.GET)
-	@ResponseBody
-	public List<Tool> backpack(Model model, HttpSession session) {
+	public String backpack(Model model, HttpSession session) {
 		String token = session.getAttribute("token").toString();
 		int id = userrepository.findBytoken(token).get(0).getId();
-		return toolrepository.findByuserId(id);
+		List<Tool> tools = toolrepository.findByuserId(id);
+		model.addAttribute("tools", tools);
+		return "backpack";
 	}
 
 	@RequestMapping("/login")
@@ -97,14 +109,19 @@ public class UserController {
 	}
 
 	@RequestMapping("/storeroom")
-	@ResponseBody
-	public List<Tool> storeroom(@RequestParam("name") String name,Model modle ) {
-		//if(name.equals("选择仓库"))
-		//	return "null";
+	// @ResponseBody
+	public String storeroom(@RequestParam("name") String name, Model modle) {
+		if (name.equals("选择仓库"))
+			return "null";
 		int roomid = storepository.findByname(name).get(0).getId();
-		return toolrepository.findByStoreroomIdAndUserId(roomid, 0);
-		//modle.addAttribute("tools",toolrepository.findByStoreroomIdAndUserId(roomid, 0));
-		//return "test";
+		// return toolrepository.findByStoreroomIdAndUserId(roomid, 0);
+		List<String> sortProperties = new ArrayList<>();
+		sortProperties.add("name");
+		sortProperties.add("StoreroomId");
+		Sort sort = new Sort(Sort.Direction.DESC, sortProperties);
+		List<Tool> tools = toolrepository.findByStoreroomIdAndUserId(roomid, 0, sort);
+		modle.addAttribute("tbodies", Tbody.Sort(tools));
+		return "storeroom";
 	}
 
 	@RequestMapping("/take")
@@ -115,17 +132,33 @@ public class UserController {
 		Tool tool = toolrepository.findOne(toolid);
 		tool.setUserId(id);
 		toolrepository.save(tool);
+		Log log = new Log();
+		log.setStoreroom(tool.getStoreroom());
+		log.setTime(new Date());
+		log.setType("take");
+		log.setUser(userrepository.findOne(id));
+		log.setTool(tool);
+		logrepository.save(log);
 	}
 
 	// 被拿取的工具不显示
 	@RequestMapping("/bring")
 	@ResponseBody
 	public void bring(@RequestParam("id") int toolid,
-			@RequestParam(value = "roomid", required = false) Integer storeroomId) {
+			@RequestParam(value = "roomid", required = false) Integer storeroomId, HttpSession session) {
+		String token = session.getAttribute("token").toString();
+		int id = userrepository.findBytoken(token).get(0).getId();
 		Tool tool = toolrepository.findOne(toolid);
 		tool.setUserId(0);
 		if (storeroomId != null)
 			tool.setStoreroom(storepository.findOne(storeroomId));
 		toolrepository.save(tool);
+		Log log = new Log();
+		log.setStoreroom(tool.getStoreroom());
+		log.setTime(new Date());
+		log.setType("bring");
+		log.setUser(userrepository.findOne(id));
+		log.setTool(tool);
+		logrepository.save(log);
 	}
 }

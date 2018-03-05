@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class Tool {
@@ -13,8 +14,13 @@ public class Tool {
 	int id;
 	String name;
 	String size1;
-	String size2;
 	int userId;
+	@Transient
+	int amount = 1;
+	@Transient
+	String hidden;
+	@Transient
+	String clas;
 	@ManyToOne
 	private Storeroom storeroom;
 
@@ -42,14 +48,6 @@ public class Tool {
 		this.size1 = size1;
 	}
 
-	public String getSize2() {
-		return size2;
-	}
-
-	public void setSize2(String size2) {
-		this.size2 = size2;
-	}
-
 	public int getUserId() {
 		return userId;
 	}
@@ -64,5 +62,29 @@ public class Tool {
 
 	public void setStoreroom(Storeroom storeroom) {
 		this.storeroom = storeroom;
+	}
+
+	public int getAmount() {
+		return amount;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+
+	public String getHidden() {
+		return hidden;
+	}
+
+	public void setHidden(String hidden) {
+		this.hidden = hidden;
+	}
+
+	public String getClas() {
+		return clas;
+	}
+
+	public void setClas(String clas) {
+		this.clas = clas;
 	}
 }

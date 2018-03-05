@@ -1,39 +1,48 @@
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8"></meta>
 <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-<link rel="stylesheet" type="text/css"
-	href="http://cdn.bootcss.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"></link>
+
+<!-- 新 Bootstrap4 核心 CSS 文件 -->
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"></link>
+ 
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+ 
+<!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
+<script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+ 
+<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="css/mystyle.css"></link>
-<script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
-<script
-	src="http://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-<script type="text/javascript" src="js/mymain.js"></script>
+<link rel="stylesheet" type="text/css" href="css/index.css"></link>
 <title>搜索结果</title>
 </head>
 <body>
 	<div class="container" id="a">
-		<table class="table table-striped table-sm">
+		<table class="table table-sm">
 			<thead>
 				<tr>
 					<th>名称</th>
 					<th>规格</th>
 					<th>库房</th>
-					<th> </th>
+					<th>数量</th>
 				</tr>
 			</thead>
-			<tbody id="tbody">
-				<tr th:each="tool:${tools}" th:id="${tool.id}">
+			<tbody th:each="tbody:${tbodies}" th:id="${tbody.id}"
+				th:href="${tbody.href}" th:attr="data-toggle=${tbody.data_toggle}">
+				<tr th:each="tool:${tbody.tools}" th:id="${tool.id}"
+					th:class="${tool.clas}">
 					<th th:text="${tool.name}">梅花扳手</th>
 					<th>
-						<p th:text="${tool.size1}">-</p> <br></br>
-						<p th:text="${tool.size2}">-</p>
+						<p th:text="${tool.size1}">-</p>
 					</th>
 					<th><p th:text="${tool.storeroom.name}"></p></th>
 					<th>
-						<button class="btn btn-primary btn-sm"
+						<p th:if="${tool.amount!=1}" th:text="${tool.amount}"></p>
+						<button class="btn btn-primary btn-sm" th:if="${tool.amount==1}"
 							th:onclick="'take('+${tool.id}+')'">拿取</button>
 					</th>
 				</tr>

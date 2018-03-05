@@ -1,8 +1,14 @@
-<!DOCTYPE html>
-<html>
 <head>
 <meta charset="utf-8"></meta>
 </head>
+<thead>
+	<tr>
+		<th>名称</th>
+		<th>规格</th>
+		<th>数量</th>
+		<th></th>
+	</tr>
+</thead>
 <tbody id="tbody">
 	<tr th:each="tool:${tools}" th:id="${tool.id}">
 		<th th:text="${tool.name}">梅花扳手</th>
@@ -16,5 +22,3 @@
 		</th>
 	</tr>
 </tbody>
-
-</html>
