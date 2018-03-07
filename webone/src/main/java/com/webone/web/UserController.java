@@ -161,4 +161,22 @@ public class UserController {
 		log.setTool(tool);
 		logrepository.save(log);
 	}
+
+	@RequestMapping("/changepassword")
+	public String changePass() {
+		return "changepassword";
+
+	}
+
+	@RequestMapping(value = "/changepassword", method = RequestMethod.POST)
+	public String changePass(@RequestParam("newpassword") String newp, @RequestParam("oldpassword") String old,
+			HttpSession session) {
+		String token=session.getAttribute("token").toString();
+		User userDb = userrepository.findBytoken(token).get(0);
+		if(userDb.getPassword().equals(old)) {
+			userDb.setPassword(newp);
+			userrepository.save(userDb);
+		}
+		return "redirect:/login";
+	}
 }
