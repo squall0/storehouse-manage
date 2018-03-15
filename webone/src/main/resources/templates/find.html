@@ -5,17 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
 
 <!-- 新 Bootstrap4 核心 CSS 文件 -->
-<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"></link>
- 
+<link rel="stylesheet"
+	href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"></link>
+
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
- 
+
 <!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
 <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
- 
-<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
-<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
+<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+<script
+	src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/mymain.js"></script>
 <link rel="stylesheet" type="text/css" href="css/mystyle.css"></link>
 <link rel="stylesheet" type="text/css" href="css/index.css"></link>
 <title>搜索结果</title>
@@ -32,7 +34,8 @@
 				</tr>
 			</thead>
 			<tbody th:each="tbody:${tbodies}" th:id="${tbody.id}"
-				th:href="${tbody.href}" th:attr="data-toggle=${tbody.data_toggle}">
+				th:href="${tbody.href}" th:class="${tbody.clas}"
+				th:attr="data-toggle=${tbody.data_toggle}">
 				<tr th:each="tool:${tbody.tools}" th:id="${tool.id}"
 					th:class="${tool.clas}">
 					<th th:text="${tool.name}">梅花扳手</th>
@@ -41,9 +44,12 @@
 					</th>
 					<th><p th:text="${tool.storeroom.name}"></p></th>
 					<th>
+						<p th:if="${tool.user!=null}" th:text="${tool.user.cnname}"></p>
 						<p th:if="${tool.amount!=1}" th:text="${tool.amount}"></p>
-						<button class="btn btn-primary btn-sm" th:if="${tool.amount==1}"
-							th:onclick="'take('+${tool.id}+')'">拿取</button>
+						<div th:if="${tool.user==null}">
+							<button class="btn btn-primary btn-sm" th:if="${tool.amount==1}"
+								th:onclick="'take('+${tool.id}+')'">拿取</button>
+						</div>
 					</th>
 				</tr>
 			</tbody>

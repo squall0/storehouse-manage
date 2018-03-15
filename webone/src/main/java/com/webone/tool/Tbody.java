@@ -11,6 +11,7 @@ public class Tbody {
 	List<Tool> tools = new ArrayList<>();
 	String data_toggle = "";
 	String href = "";
+	String clas = "";
 
 	public static List<Tbody> Sort(List<Tool> tools) {
 		List<Tbody> tbodies = new ArrayList<>();
@@ -37,12 +38,12 @@ public class Tbody {
 		Iterator<Tbody> tbodyIt = tbodies.iterator();
 		while (tbodyIt.hasNext()) {
 			Tbody tbody = (Tbody) tbodyIt.next();
-			if(tbody.getTools().size()>1) {
+			if (tbody.getTools().size() > 1) {
 				Tbody head = new Tbody();
 				head.setData_toggle("collapse");
-				head.setHref("#"+tbody.getId());
+				head.setHref("#" + tbody.getId());
 				Tool htool = new Tool();
-				Tool cltools=tbody.getTools().get(0);
+				Tool cltools = tbody.getTools().get(0);
 				htool.setName(cltools.getName());
 				htool.setAmount(tbody.getTools().size());
 				htool.setStoreroom(cltools.getStoreroom());
@@ -50,6 +51,7 @@ public class Tbody {
 				htool.setClas("table-primary");
 				head.getTools().add(htool);
 				result.add(head);
+				tbody.setClas("collapse show");
 			}
 			result.add(tbody);
 		}
@@ -80,7 +82,6 @@ public class Tbody {
 		this.data_toggle = data_toggle;
 	}
 
-
 	public String getHref() {
 		return href;
 	}
@@ -88,4 +89,13 @@ public class Tbody {
 	public void setHref(String href) {
 		this.href = href;
 	}
+
+	public String getClas() {
+		return clas;
+	}
+
+	public void setClas(String clas) {
+		this.clas = clas;
+	}
+
 }

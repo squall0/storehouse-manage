@@ -14,7 +14,6 @@ public class Tool {
 	int id;
 	String name;
 	String size1;
-	int userId;
 	@Transient
 	int amount = 1;
 	@Transient
@@ -23,6 +22,7 @@ public class Tool {
 	String clas;
 	@ManyToOne
 	private Storeroom storeroom;
+	@ManyToOne private User user;
 
 	public int getId() {
 		return id;
@@ -46,14 +46,6 @@ public class Tool {
 
 	public void setSize1(String size1) {
 		this.size1 = size1;
-	}
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
 	}
 
 	public Storeroom getStoreroom() {
@@ -86,5 +78,13 @@ public class Tool {
 
 	public void setClas(String clas) {
 		this.clas = clas;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

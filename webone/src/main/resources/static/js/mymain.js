@@ -35,6 +35,7 @@ $(document).ready(function() {
 	// $( ".col-3" ).hide( "slide", 1000 );
 });
 function take(r) {
+	
 	$("#" + r).remove();
 	$.post("/take", {
 		"id" : r
@@ -56,4 +57,5 @@ function bring(r) {
 			// $("#" + r).remove();
 		}
 	});
+
 }

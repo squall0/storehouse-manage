@@ -6,22 +6,24 @@
 		<th>名称</th>
 		<th>规格</th>
 		<th>数量</th>
-		<th></th>
 	</tr>
 </thead>
 <tbody th:each="tbody:${tbodies}" th:id="${tbody.id}"
-	th:href="${tbody.href}" th:attr="data-toggle=${tbody.data_toggle}">
+	th:href="${tbody.href}" th:class="${tbody.clas}"
+	th:attr="data-toggle=${tbody.data_toggle}">
 	<tr th:each="tool:${tbody.tools}" th:id="${tool.id}"
 		th:class="${tool.clas}">
 		<th th:text="${tool.name}">梅花扳手</th>
 		<th>
 			<p th:text="${tool.size1}">-</p>
 		</th>
-		<th><p th:text="${tool.storeroom.name}"></p></th>
 		<th>
+			<p th:if="${tool.user!=null}" th:text="${tool.user.cnname}"></p>
 			<p th:if="${tool.amount!=1}" th:text="${tool.amount}"></p>
-			<button class="btn btn-primary btn-sm" th:if="${tool.amount==1}"
-				th:onclick="'take('+${tool.id}+')'">拿取</button>
+			<div th:if="${tool.user==null}">
+				<button class="btn btn-primary btn-sm" th:if="${tool.amount==1}"
+					th:onclick="'take('+${tool.id}+')'">拿取</button>
+			</div>
 		</th>
 	</tr>
 </tbody>

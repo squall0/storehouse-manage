@@ -15,6 +15,7 @@ public class User {
 	@Size(min = 6, max = 6)
 	@Column(name = "name")
 	String username;
+	String cnname;
 	@Size(min = 6, max = 45)
 	String password;
 //	@Size(min = 64, max = 64)
@@ -59,5 +60,13 @@ public class User {
 
 	public void setTeamId(int teamId) {
 		this.teamId = teamId;
+	}
+
+	public String getCnname() {
+		return cnname;
+	}
+
+	public void setCnname(String cnname) {
+		this.cnname = cnname;
 	}
 }
